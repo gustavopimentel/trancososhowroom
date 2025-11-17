@@ -1,7 +1,9 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Toaster } from '@/components/ui/toaster'
 import { useViewportScale } from '@/hooks/use-viewport-scale'
+import { useAllImages } from '@/hooks/useAllImages'
+import { ImagePreloader } from '@/components/ImagePreloader'
 import { cn } from '@/lib/utils'
 import { VillaVistaPage } from '@/pages/VillaVistaPage'
 import { VillaVistaFalesiasPage } from '@/pages/VillaVistaFalesiasPage'
@@ -49,10 +51,26 @@ function AppContent() {
 }
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
+  const allImages = useAllImages()
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false)
+  }
+
   return (
-    <MenuProvider>
-      <AppContent />
-    </MenuProvider>
+    <>
+      <ImagePreloader 
+        imageUrls={allImages} 
+        onComplete={handleLoadingComplete} 
+      />
+      
+      {!isLoading && (
+        <MenuProvider>
+          <AppContent />
+        </MenuProvider>
+      )}
+    </>
   )
 }
 
