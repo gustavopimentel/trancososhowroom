@@ -62,13 +62,20 @@ function gridToPixels(column: string, row: number, containerWidth: number, conta
   const colUpper = column.toUpperCase()
   
   if (colUpper.length === 1) {
-    // Coluna simples A-Z
+    // Coluna simples A-Z (índices 0-25)
     colIndex = colUpper.charCodeAt(0) - 65
   } else if (colUpper.length === 2) {
-    // Coluna dupla AA-AZ, BA-BZ, etc.
+    // Coluna dupla AA-AN (índices 26-39)
+    // AA = 26, AB = 27, ..., AN = 39
     const first = colUpper.charCodeAt(0) - 65
     const second = colUpper.charCodeAt(1) - 65
-    colIndex = 26 + (first * 26) + second
+    // Para AA-AN: first deve ser 0 (A), second vai de 0 (A) a 13 (N)
+    if (first === 0) {
+      colIndex = 26 + second
+    } else {
+      console.warn(`Coluna ${column} fora do range. Use A-Z ou AA-AN`)
+      return { x: 0, y: 0 }
+    }
   } else {
     console.warn(`Formato de coluna inválido: ${column}`)
     return { x: 0, y: 0 }
