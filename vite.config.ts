@@ -5,6 +5,10 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+// Verificar se está rodando no Vercel ou em produção
+const isVercel = process.env.VERCEL === '1'
+const isProduction = process.env.NODE_ENV === 'production'
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -18,7 +22,10 @@ export default defineConfig({
     host: true,
   },
   build: {
-    emptyOutDir: false, // Não limpar a pasta dist (para preservar executáveis)
+    // No Vercel, sempre limpar a pasta dist
+    // Localmente, preservar executáveis
+    emptyOutDir: isVercel || isProduction,
   },
+  base: '/',
 })
 
