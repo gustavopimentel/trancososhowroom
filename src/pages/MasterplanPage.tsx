@@ -182,14 +182,14 @@ const masterplanPoints: MasterplanPoint[] = [
     number: 11,
     label: 'Academia',
     route: '/academia',
-    position: grid("V", 29),
+    position: grid("U", 30),
   },
   {
     id: 'villavista-falesias',
     number: 12,
     label: 'Villavista Falésias',
     route: '/villavista-falesias',
-    position: grid("T", 30),
+    position: grid("T", 31),
   },
   {
     id: 'beach-club-tartarugas',
