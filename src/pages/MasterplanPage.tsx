@@ -139,7 +139,7 @@ const masterplanPoints: MasterplanPoint[] = [
     number: 4,
     label: 'Villavista Lago',
     route: '/villavista-lago',
-    position: grid("M", 8),
+    position: grid("N", 12),
   },
   {
     id: 'teatro-loccitane',
@@ -160,7 +160,7 @@ const masterplanPoints: MasterplanPoint[] = [
     number: 7,
     label: 'Villavista Campo',
     route: '/villavista-campo',
-    position: grid("O", 17),
+    position: grid("O", 21),
   },
   {
     id: 'restaurante-favoritto',
@@ -181,7 +181,7 @@ const masterplanPoints: MasterplanPoint[] = [
     number: 10,
     label: 'Elevador exclusivo',
     route: '/novos-amenities',
-    position: grid("W", 19),
+    position: grid("U", 20),
   },
   {
     id: 'academia',
@@ -223,7 +223,7 @@ const masterplanPoints: MasterplanPoint[] = [
 export function MasterplanPage() {
   const navigate = useNavigate()
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null)
-  const [showGrid, setShowGrid] = useState(false) // Grade escondida por padrão (pressione 'G' para mostrar/esconder)
+  const [showGrid, setShowGrid] = useState(true) // Grade visível por padrão (pressione 'G' para mostrar/esconder)
   const [selectedPoint, setSelectedPoint] = useState<MasterplanPoint | null>(null)
 
   // Atalho de teclado para mostrar/esconder grade (tecla 'G')
@@ -271,14 +271,14 @@ export function MasterplanPage() {
       <div className="relative w-full h-full flex">
         {/* Coluna 1 - Mapa com marcadores (80%) */}
         <div className="w-[80%] h-full relative">
-          {/* Grade tipo batalha naval */}
+          {/* Grade tipo batalha naval - sempre visível */}
           {showGrid && (
             <div className="absolute inset-0 z-[5] pointer-events-none">
               {/* Linhas horizontais */}
               {Array.from({ length: GRID_ROWS + 1 }).map((_, i) => (
                 <div
                   key={`row-${i}`}
-                  className="absolute left-0 right-0 border-t border-white/20"
+                  className="absolute left-0 right-0 border-t border-white/30"
                   style={{
                     top: `${(i / GRID_ROWS) * 100}%`,
                   }}
@@ -289,7 +289,7 @@ export function MasterplanPage() {
               {Array.from({ length: GRID_COLS + 1 }).map((_, i) => (
                 <div
                   key={`col-${i}`}
-                  className="absolute top-0 bottom-0 border-l border-white/20"
+                  className="absolute top-0 bottom-0 border-l border-white/30"
                   style={{
                     left: `${(i / GRID_COLS) * 100}%`,
                   }}
@@ -302,11 +302,12 @@ export function MasterplanPage() {
                 return (
                   <div
                     key={`col-label-top-${letter}`}
-                    className="absolute top-0 text-white text-sm font-mono font-bold pointer-events-none drop-shadow-lg"
+                    className="absolute top-0 text-white text-xs font-mono font-bold pointer-events-none drop-shadow-lg bg-black/40 px-1 rounded"
                     style={{
                       left: `${((i + 0.5) / GRID_COLS) * 100}%`,
                       transform: 'translateX(-50%)',
-                      paddingTop: '4px',
+                      paddingTop: '2px',
+                      paddingBottom: '2px',
                       textShadow: '0 0 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                     }}
                   >
@@ -321,11 +322,12 @@ export function MasterplanPage() {
                 return (
                   <div
                     key={`col-label-bottom-${letter}`}
-                    className="absolute bottom-0 text-white text-sm font-mono font-bold pointer-events-none drop-shadow-lg"
+                    className="absolute bottom-0 text-white text-xs font-mono font-bold pointer-events-none drop-shadow-lg bg-black/40 px-1 rounded"
                     style={{
                       left: `${((i + 0.5) / GRID_COLS) * 100}%`,
                       transform: 'translateX(-50%)',
-                      paddingBottom: '4px',
+                      paddingTop: '2px',
+                      paddingBottom: '2px',
                       textShadow: '0 0 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                     }}
                   >
@@ -334,17 +336,16 @@ export function MasterplanPage() {
                 )
               })}
 
-              {/* Labels das linhas (1-50) - Esquerda */}
+              {/* Labels das linhas (1-50) - Esquerda - PRIMEIRA COLUNA */}
               {Array.from({ length: GRID_ROWS }).map((_, i) => {
                 const rowNumber = i + 1
                 return (
                   <div
                     key={`row-label-left-${rowNumber}`}
-                    className="absolute left-0 text-white text-sm font-mono font-bold pointer-events-none drop-shadow-lg"
+                    className="absolute left-0 text-white text-xs font-mono font-bold pointer-events-none drop-shadow-lg bg-black/40 px-1.5 py-0.5 rounded"
                     style={{
                       top: `${((i + 0.5) / GRID_ROWS) * 100}%`,
                       transform: 'translateY(-50%)',
-                      paddingLeft: '6px',
                       textShadow: '0 0 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                     }}
                   >
@@ -359,11 +360,12 @@ export function MasterplanPage() {
                 return (
                   <div
                     key={`row-label-right-${rowNumber}`}
-                    className="absolute right-0 text-white text-sm font-mono font-bold pointer-events-none drop-shadow-lg"
+                    className="absolute right-0 text-white text-xs font-mono font-bold pointer-events-none drop-shadow-lg bg-black/40 px-1 rounded"
                     style={{
                       top: `${((i + 0.5) / GRID_ROWS) * 100}%`,
                       transform: 'translateY(-50%)',
-                      paddingRight: '6px',
+                      paddingTop: '2px',
+                      paddingBottom: '2px',
                       textShadow: '0 0 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                     }}
                   >
