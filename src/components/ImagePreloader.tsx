@@ -77,7 +77,7 @@ export function ImagePreloader({ imageUrls, onComplete }: ImagePreloaderProps) {
               transition={{ duration: 0.5 }}
               className="mb-12"
             >
-              <h1 className="text-5xl font-serif mb-4 font-bold">Villa Vista</h1>
+              <h1 className="text-5xl font-serif mb-4 font-bold">Villavista</h1>
               <p className="text-xl text-white/80">Showroom</p>
             </motion.div>
 
