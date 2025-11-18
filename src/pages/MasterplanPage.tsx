@@ -55,38 +55,13 @@ const modalImages: Record<string, string> = {
 //
 // Exemplo prático no código:
 // position: grid("J", 23) // Coloca a bolinha no centro da célula J-23
-function gridToPixels(column: string, row: number, containerWidth: number, containerHeight: number, gridCols: number = 40, gridRows: number = 50) {
-  // Converter coluna para número
-  // Suporta A-Z (0-25) e AA-AZ, BA-BZ, etc.
-  let colIndex = 0
-  const colUpper = column.toUpperCase()
-  
-  if (colUpper.length === 1) {
-    // Coluna simples A-Z (índices 0-25)
-    colIndex = colUpper.charCodeAt(0) - 65
-  } else if (colUpper.length === 2) {
-    // Coluna dupla AA-AN (índices 26-39)
-    // AA = 26, AB = 27, ..., AN = 39
-    const first = colUpper.charCodeAt(0) - 65
-    const second = colUpper.charCodeAt(1) - 65
-    // Para AA-AN: first deve ser 0 (A), second vai de 0 (A) a 13 (N)
-    if (first === 0) {
-      colIndex = 26 + second
-    } else {
-      console.warn(`Coluna ${column} fora do range. Use A-Z ou AA-AN`)
-      return { x: 0, y: 0 }
-    }
-  } else {
-    console.warn(`Formato de coluna inválido: ${column}`)
-    return { x: 0, y: 0 }
-  }
+function gridToPixels(column: string, row: number, containerWidth: number, containerHeight: number, gridCols: number = 26, gridRows: number = 50) {
+  // Converter letra para número (A=0, B=1, ..., Z=25)
+  const colIndex = column.toUpperCase().charCodeAt(0) - 65
   
   // Validar entrada
   if (colIndex < 0 || colIndex >= gridCols) {
-    const maxCol = colIndex < 26 
-      ? String.fromCharCode(64 + Math.min(gridCols, 26))
-      : `AA-${String.fromCharCode(64 + Math.floor((gridCols - 26) / 26))}${String.fromCharCode(64 + ((gridCols - 26) % 26))}`
-    console.warn(`Coluna ${column} fora do range. Máximo: ${maxCol}`)
+    console.warn(`Coluna ${column} fora do range A-${String.fromCharCode(64 + gridCols)}`)
     return { x: 0, y: 0 }
   }
   
@@ -273,7 +248,7 @@ export function MasterplanPage() {
 
 
   // Configuração da grade
-  const GRID_COLS = 40 // A-Z + AA-AN (26 + 14 = 40 colunas)
+  const GRID_COLS = 26 // A-Z
   const GRID_ROWS = 50 // 1-50
 
   return (
@@ -315,22 +290,13 @@ export function MasterplanPage() {
                 />
               ))}
 
-              {/* Labels das colunas - Topo */}
+              {/* Labels das colunas (A-Z) - Topo */}
               {Array.from({ length: GRID_COLS }).map((_, i) => {
-                let label: string
-                if (i < 26) {
-                  // A-Z
-                  label = String.fromCharCode(65 + i)
-                } else {
-                  // AA, AB, AC, ... AN (14 colunas adicionais)
-                  const first = Math.floor((i - 26) / 26)
-                  const second = (i - 26) % 26
-                  label = String.fromCharCode(65 + first) + String.fromCharCode(65 + second)
-                }
+                const letter = String.fromCharCode(65 + i) // A=65, B=66, etc.
                 return (
                   <div
-                    key={`col-label-top-${i}`}
-                    className="absolute top-0 text-white text-xs font-mono font-bold pointer-events-none drop-shadow-lg"
+                    key={`col-label-top-${letter}`}
+                    className="absolute top-0 text-white text-sm font-mono font-bold pointer-events-none drop-shadow-lg"
                     style={{
                       left: `${((i + 0.5) / GRID_COLS) * 100}%`,
                       transform: 'translateX(-50%)',
@@ -338,27 +304,18 @@ export function MasterplanPage() {
                       textShadow: '0 0 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                     }}
                   >
-                    {label}
+                    {letter}
                   </div>
                 )
               })}
 
-              {/* Labels das colunas - Rodapé */}
+              {/* Labels das colunas (A-Z) - Rodapé */}
               {Array.from({ length: GRID_COLS }).map((_, i) => {
-                let label: string
-                if (i < 26) {
-                  // A-Z
-                  label = String.fromCharCode(65 + i)
-                } else {
-                  // AA, AB, AC, ... AN
-                  const first = Math.floor((i - 26) / 26)
-                  const second = (i - 26) % 26
-                  label = String.fromCharCode(65 + first) + String.fromCharCode(65 + second)
-                }
+                const letter = String.fromCharCode(65 + i)
                 return (
                   <div
-                    key={`col-label-bottom-${i}`}
-                    className="absolute bottom-0 text-white text-xs font-mono font-bold pointer-events-none drop-shadow-lg"
+                    key={`col-label-bottom-${letter}`}
+                    className="absolute bottom-0 text-white text-sm font-mono font-bold pointer-events-none drop-shadow-lg"
                     style={{
                       left: `${((i + 0.5) / GRID_COLS) * 100}%`,
                       transform: 'translateX(-50%)',
@@ -366,7 +323,7 @@ export function MasterplanPage() {
                       textShadow: '0 0 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                     }}
                   >
-                    {label}
+                    {letter}
                   </div>
                 )
               })}
