@@ -308,13 +308,22 @@ export function MasterplanPage() {
                 />
               ))}
 
-              {/* Labels das colunas (A-Z) - Topo */}
+              {/* Labels das colunas - Topo */}
               {Array.from({ length: GRID_COLS }).map((_, i) => {
-                const letter = String.fromCharCode(65 + i) // A=65, B=66, etc.
+                let label: string
+                if (i < 26) {
+                  // A-Z
+                  label = String.fromCharCode(65 + i)
+                } else {
+                  // AA, AB, AC, ... AN (14 colunas adicionais)
+                  const first = Math.floor((i - 26) / 26)
+                  const second = (i - 26) % 26
+                  label = String.fromCharCode(65 + first) + String.fromCharCode(65 + second)
+                }
                 return (
                   <div
-                    key={`col-label-top-${letter}`}
-                    className="absolute top-0 text-white text-sm font-mono font-bold pointer-events-none drop-shadow-lg"
+                    key={`col-label-top-${i}`}
+                    className="absolute top-0 text-white text-xs font-mono font-bold pointer-events-none drop-shadow-lg"
                     style={{
                       left: `${((i + 0.5) / GRID_COLS) * 100}%`,
                       transform: 'translateX(-50%)',
@@ -322,18 +331,27 @@ export function MasterplanPage() {
                       textShadow: '0 0 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                     }}
                   >
-                    {letter}
+                    {label}
                   </div>
                 )
               })}
 
-              {/* Labels das colunas (A-Z) - Rodapé */}
+              {/* Labels das colunas - Rodapé */}
               {Array.from({ length: GRID_COLS }).map((_, i) => {
-                const letter = String.fromCharCode(65 + i)
+                let label: string
+                if (i < 26) {
+                  // A-Z
+                  label = String.fromCharCode(65 + i)
+                } else {
+                  // AA, AB, AC, ... AN
+                  const first = Math.floor((i - 26) / 26)
+                  const second = (i - 26) % 26
+                  label = String.fromCharCode(65 + first) + String.fromCharCode(65 + second)
+                }
                 return (
                   <div
-                    key={`col-label-bottom-${letter}`}
-                    className="absolute bottom-0 text-white text-sm font-mono font-bold pointer-events-none drop-shadow-lg"
+                    key={`col-label-bottom-${i}`}
+                    className="absolute bottom-0 text-white text-xs font-mono font-bold pointer-events-none drop-shadow-lg"
                     style={{
                       left: `${((i + 0.5) / GRID_COLS) * 100}%`,
                       transform: 'translateX(-50%)',
@@ -341,7 +359,7 @@ export function MasterplanPage() {
                       textShadow: '0 0 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                     }}
                   >
-                    {letter}
+                    {label}
                   </div>
                 )
               })}
