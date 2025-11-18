@@ -91,6 +91,12 @@ function grid(column: string, row: number) {
   return gridToPixels(column, row, GRID_CONTAINER_WIDTH, GRID_CONTAINER_HEIGHT)
 }
 
+// Função helper para ajustes finos: gridOffset("T", 30, -20, 0) move 20px para a esquerda
+function gridOffset(column: string, row: number, offsetX: number = 0, offsetY: number = 0) {
+  const pos = grid(column, row)
+  return { x: pos.x + offsetX, y: pos.y + offsetY }
+}
+
 interface MasterplanPoint {
   id: string
   number: number
@@ -189,7 +195,7 @@ const masterplanPoints: MasterplanPoint[] = [
     number: 12,
     label: 'Villavista Falésias',
     route: '/villavista-falesias',
-    position: grid("S", 30),
+    position: gridOffset("T", 30, -15, 0), // T-30 com ajuste de -15px para a esquerda
   },
   {
     id: 'beach-club-tartarugas',
