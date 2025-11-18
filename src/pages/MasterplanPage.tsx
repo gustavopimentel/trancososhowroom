@@ -55,13 +55,31 @@ const modalImages: Record<string, string> = {
 //
 // Exemplo prático no código:
 // position: grid("J", 23) // Coloca a bolinha no centro da célula J-23
-function gridToPixels(column: string, row: number, containerWidth: number, containerHeight: number, gridCols: number = 26, gridRows: number = 50) {
-  // Converter letra para número (A=0, B=1, ..., Z=25)
-  const colIndex = column.toUpperCase().charCodeAt(0) - 65
+function gridToPixels(column: string, row: number, containerWidth: number, containerHeight: number, gridCols: number = 40, gridRows: number = 50) {
+  // Converter coluna para número
+  // Suporta A-Z (0-25) e AA-AZ, BA-BZ, etc.
+  let colIndex = 0
+  const colUpper = column.toUpperCase()
+  
+  if (colUpper.length === 1) {
+    // Coluna simples A-Z
+    colIndex = colUpper.charCodeAt(0) - 65
+  } else if (colUpper.length === 2) {
+    // Coluna dupla AA-AZ, BA-BZ, etc.
+    const first = colUpper.charCodeAt(0) - 65
+    const second = colUpper.charCodeAt(1) - 65
+    colIndex = 26 + (first * 26) + second
+  } else {
+    console.warn(`Formato de coluna inválido: ${column}`)
+    return { x: 0, y: 0 }
+  }
   
   // Validar entrada
   if (colIndex < 0 || colIndex >= gridCols) {
-    console.warn(`Coluna ${column} fora do range A-${String.fromCharCode(64 + gridCols)}`)
+    const maxCol = colIndex < 26 
+      ? String.fromCharCode(64 + Math.min(gridCols, 26))
+      : `AA-${String.fromCharCode(64 + Math.floor((gridCols - 26) / 26))}${String.fromCharCode(64 + ((gridCols - 26) % 26))}`
+    console.warn(`Coluna ${column} fora do range. Máximo: ${maxCol}`)
     return { x: 0, y: 0 }
   }
   
@@ -248,7 +266,7 @@ export function MasterplanPage() {
 
 
   // Configuração da grade
-  const GRID_COLS = 26 // A-Z
+  const GRID_COLS = 40 // A-Z + AA-AN (26 + 14 = 40 colunas)
   const GRID_ROWS = 50 // 1-50
 
   return (
