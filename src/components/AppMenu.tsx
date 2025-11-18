@@ -108,7 +108,10 @@ export function AppMenu() {
               'bg-[#8B6F47]',
               'shadow-2xl',
               'overflow-hidden',
-              'flex flex-col'
+              'flex flex-col',
+              '[&::-webkit-scrollbar]:hidden',
+              '[-ms-overflow-style:none]',
+              '[scrollbar-width:none]'
             )}
             initial={{ x: -sidebarWidth - 10 }}
             animate={{ x: 0 }}
@@ -152,8 +155,8 @@ export function AppMenu() {
             </div>
 
             {/* Lista de itens do menu - alinhamento profissional */}
-            <nav className="flex-1 overflow-y-auto py-6">
-              <ul className="space-y-0">
+            <nav className="flex-1 overflow-hidden py-6">
+              <ul className="space-y-0 overflow-hidden">
                 {menuItems.map((item, index) => {
                   const isActive = location.pathname === item.route || 
                     (item.route === '/villavista' && location.pathname === '/')
