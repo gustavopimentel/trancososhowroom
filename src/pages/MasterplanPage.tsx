@@ -195,7 +195,7 @@ const masterplanPoints: MasterplanPoint[] = [
     number: 12,
     label: 'Villavista Falésias',
     route: '/villavista-falesias',
-    position: gridOffset("T", 30, 20, 0), // T-30 com ajuste de +20px para a direita
+    position: gridOffset("T", 30, -25, 0), // T-30 com ajuste de -25px para a esquerda
   },
   {
     id: 'beach-club-tartarugas',
