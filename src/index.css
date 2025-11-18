@@ -254,3 +254,17 @@
   font-display: swap;
 }
 
+/* Esconder scrollbars no menu */
+aside nav,
+aside nav ul,
+aside nav li {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE e Edge */
+}
+
+aside nav::-webkit-scrollbar,
+aside nav ul::-webkit-scrollbar,
+aside nav li::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
