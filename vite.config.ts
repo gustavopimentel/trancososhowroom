@@ -17,5 +17,8 @@ export default defineConfig({
     port: 8080,
     host: true,
   },
+  build: {
+    emptyOutDir: false, // Não limpar a pasta dist (para preservar executáveis)
+  },
 })
 
