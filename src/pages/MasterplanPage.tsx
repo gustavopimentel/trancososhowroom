@@ -223,7 +223,7 @@ const masterplanPoints: MasterplanPoint[] = [
 export function MasterplanPage() {
   const navigate = useNavigate()
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null)
-  const [showGrid, setShowGrid] = useState(true) // Grade visível por padrão (pressione 'G' para mostrar/esconder)
+  const [showGrid, setShowGrid] = useState(false) // Grade escondida por padrão (pressione 'G' para mostrar/esconder)
   const [selectedPoint, setSelectedPoint] = useState<MasterplanPoint | null>(null)
 
   // Atalho de teclado para mostrar/esconder grade (tecla 'G')
