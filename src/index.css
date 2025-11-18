@@ -114,6 +114,9 @@
     align-items: center;
     justify-content: center;
     background: hsl(var(--background));
+    position: fixed;
+    top: 0;
+    left: 0;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -129,6 +132,7 @@
   transform-origin: center center;
   background: hsl(var(--background));
   overflow: hidden;
+  flex-shrink: 0;
   /* Prevenir seleção de texto em touch */
   -webkit-touch-callout: none;
   -webkit-user-select: none;

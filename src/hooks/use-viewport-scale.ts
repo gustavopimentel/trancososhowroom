@@ -10,30 +10,41 @@ export function useViewportScale() {
 
   useEffect(() => {
     const calculateScale = () => {
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight
+      // Usar requestAnimationFrame para garantir que o DOM está atualizado
+      requestAnimationFrame(() => {
+        const viewportWidth = window.innerWidth
+        const viewportHeight = window.innerHeight
 
-      // Proporção alvo: 1920x1080 = 16:9 = 1.777...
-      const targetAspectRatio = 1920 / 1080
-      const viewportAspectRatio = viewportWidth / viewportHeight
+        // Garantir valores válidos
+        if (viewportWidth <= 0 || viewportHeight <= 0) {
+          return
+        }
 
-      let newScale: number
+        // Proporção alvo: 1920x1080 = 16:9 = 1.777...
+        const targetAspectRatio = 1920 / 1080
+        const viewportAspectRatio = viewportWidth / viewportHeight
 
-      if (viewportAspectRatio > targetAspectRatio) {
-        // Viewport é mais largo que 16:9 - escala baseada na altura
-        // Isso garante que a altura sempre caiba
-        newScale = viewportHeight / 1080
-      } else {
-        // Viewport é mais estreito ou igual a 16:9 - escala baseada na largura
-        // Isso garante que a largura sempre caiba
-        newScale = viewportWidth / 1920
-      }
+        let newScale: number
 
-      setScale(newScale)
+        if (viewportAspectRatio > targetAspectRatio) {
+          // Viewport é mais largo que 16:9 - escala baseada na altura
+          // Isso garante que a altura sempre caiba
+          newScale = viewportHeight / 1080
+        } else {
+          // Viewport é mais estreito ou igual a 16:9 - escala baseada na largura
+          // Isso garante que a largura sempre caiba
+          newScale = viewportWidth / 1920
+        }
+
+        // Garantir que o scale é válido
+        if (newScale > 0 && isFinite(newScale)) {
+          setScale(newScale)
+        }
+      })
     }
 
-    // Calcular na montagem
-    calculateScale()
+    // Calcular na montagem com um pequeno delay para garantir que o DOM está pronto
+    const initialTimeout = setTimeout(calculateScale, 0)
 
     // Recalcular em resize com debounce para performance
     let timeoutId: NodeJS.Timeout
@@ -46,6 +57,7 @@ export function useViewportScale() {
     window.addEventListener('orientationchange', calculateScale)
 
     return () => {
+      clearTimeout(initialTimeout)
       clearTimeout(timeoutId)
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('orientationchange', calculateScale)

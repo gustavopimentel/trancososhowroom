@@ -22,9 +22,38 @@ function AppContent() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Recalcular scale após montagem para garantir que está correto
+    const recalculateScale = () => {
+      if (containerRef.current) {
+        const viewportWidth = window.innerWidth
+        const viewportHeight = window.innerHeight
+        const targetAspectRatio = 1920 / 1080
+        const viewportAspectRatio = viewportWidth / viewportHeight
+
+        let newScale: number
+        if (viewportAspectRatio > targetAspectRatio) {
+          newScale = viewportHeight / 1080
+        } else {
+          newScale = viewportWidth / 1920
+        }
+
+        containerRef.current.style.transform = `scale(${newScale})`
+      }
+    }
+
+    // Aplicar scale imediatamente
     if (containerRef.current) {
       containerRef.current.style.transform = `scale(${scale})`
     }
+
+    // Recalcular após um pequeno delay para garantir que o DOM está pronto
+    const timeoutId = setTimeout(() => {
+      recalculateScale()
+      // Forçar um resize event para garantir que o hook também recalcule
+      window.dispatchEvent(new Event('resize'))
+    }, 100)
+
+    return () => clearTimeout(timeoutId)
   }, [scale])
 
   return (
@@ -55,7 +84,14 @@ function App() {
   const allImages = useAllImages()
 
   const handleLoadingComplete = () => {
-    setIsLoading(false)
+    // Pequeno delay para garantir que o DOM está pronto antes de renderizar
+    setTimeout(() => {
+      setIsLoading(false)
+      // Forçar recálculo do viewport após renderizar
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+      }, 50)
+    }, 100)
   }
 
   return (
