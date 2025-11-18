@@ -1,0 +1,33 @@
+# Arquivos e pastas a ignorar no deploy do Vercel
+
+# Executáveis
+*.exe
+*.exe.bak
+INICIAR.bat
+
+# Arquivos de build local
+VillaVistaShowroom*.exe
+
+# Documentação de desenvolvimento
+COMO_TESTAR.md
+GUIA_DEPLOY.md
+GUIA_EXECUTAVEL.md
+INSTRUCOES_EXECUTAVEL.md
+TESTE_SERVIDOR.md
+VIEWPORT_SETUP.md
+
+# Servidor local
+server.cjs
+
+# Arquivos de configuração do editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
